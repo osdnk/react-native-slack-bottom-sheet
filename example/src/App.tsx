@@ -90,10 +90,7 @@ export default function ConfigScreen() {
         <Button
           title="SHOW MODAL"
           onPress={() => {
-            setVisible(false);
-            setImmediate(() => {
-              setVisible(true);
-            });
+            setVisible(true);
           }}
         />
         {visible ? (
@@ -114,6 +111,11 @@ export default function ConfigScreen() {
             headerHeight={headerHeight}
             shortFormHeight={400}
             startFromShortForm={startFromShortForm}
+            onWillDismiss={() => {}}
+            onDidDismiss={() => setVisible(false)}
+            onWillTransition={({ type }: { type: String }) =>
+              console.warn('onWillTransition', type)
+            }
           >
             <App />
           </Modal>

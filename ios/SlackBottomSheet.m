@@ -44,6 +44,9 @@
 @property (nonatomic, nonnull) NSNumber *headerHeight;
 @property (nonatomic, nonnull) NSNumber *shortFormHeight;
 @property (nonatomic) BOOL startFromShortForm;
+@property (nonatomic, copy, nullable) RCTBubblingEventBlock onWillTransition;
+@property (nonatomic, copy, nullable) RCTBubblingEventBlock onWillDismiss;
+@property (nonatomic, copy, nullable) RCTBubblingEventBlock onDidDismiss;
 @end
 
 @implementation InvisibleView {
@@ -71,10 +74,26 @@
     _headerHeight = [[NSNumber alloc] initWithInt:0];
     _shortFormHeight = [[NSNumber alloc] initWithInt:300];;
     _startFromShortForm = false;
-    
   }
   return self;
 }
+
+- (void) callWillDismiss {
+  _onWillDismiss(@{});
+}
+
+- (void) callDidDismiss {
+  _onDidDismiss(@{});
+}
+
+- (void) callWillTransitionLong {
+  _onWillTransition(@{@"type": @"long"});
+}
+
+- (void) callWillTransitionShort {
+  _onWillTransition(@{@"type": @"short"});
+}
+
 
 - (void)addSubview:(UIView *)view {
   RCTExecuteOnMainQueue(^{
@@ -86,7 +105,7 @@
     [(HelperView *)view setView:view bridge:self->_bridge];
     self->addedSubview = YES;
     
-   [rootViewController presentPanModalWithView:view config:self];
+    [rootViewController presentPanModalWithView:view config:self];
   });
   
 }
@@ -115,6 +134,9 @@ RCT_EXPORT_VIEW_PROPERTY(isHapticFeedbackEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(shouldRoundTopCorners, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(showDragIndicator, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(startFromShortForm, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(onWillTransition, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onWillDismiss, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onDidDismiss, RCTBubblingEventBlock)
 
 - (UIView *)view {
   return [[InvisibleView alloc] initWithBridge:self.bridge];
