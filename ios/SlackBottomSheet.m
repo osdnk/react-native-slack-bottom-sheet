@@ -41,6 +41,7 @@
 @property (nonatomic, nonnull) NSNumber *cornerRadius;
 @property (nonatomic, nonnull) NSNumber *springDamping;
 @property (nonatomic, nonnull) NSNumber *transitionDuration;
+@property (nonatomic, nonnull) NSNumber *backgroundOpacity;
 @property (nonatomic) BOOL anchorModalToLongForm;
 @property (nonatomic) BOOL allowsDragToDismiss;
 @property (nonatomic) BOOL allowsTapToDismiss;
@@ -90,6 +91,7 @@
     _presentGlobally = true;
     _interactsWithOuterScrollView = false;
     _initialAnimation = true;
+    _backgroundOpacity = [[NSNumber alloc] initWithDouble:0.7];
   }
   return self;
 }
@@ -147,6 +149,7 @@ RCT_EXPORT_VIEW_PROPERTY(longFormHeight, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(cornerRadius, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(springDamping, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(transitionDuration, NSNumber)
+RCT_EXPORT_VIEW_PROPERTY(backgroundOpacity, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(topOffset, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(headerHeight, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(shortFormHeight, NSNumber)
