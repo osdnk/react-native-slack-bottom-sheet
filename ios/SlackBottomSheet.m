@@ -23,6 +23,10 @@
   _bridge = bridge;
 }
 
+- (void) reactSetFrame:(CGRect)frame {
+  // shrug
+}
+
 - (void)setSpecialBounds:(CGRect)bounds {
   [self setBounds:bounds];
   [[_bridge uiManager] setSize:bounds.size forView:self];

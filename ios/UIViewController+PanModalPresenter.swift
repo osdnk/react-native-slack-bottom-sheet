@@ -21,7 +21,7 @@ class BetterGestureRecognizerDelegateAdapter: NSObject, UIGestureRecognizerDeleg
   public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
     
     if (String(describing: type(of: otherGestureRecognizer))
-      == "UIScrollViewPanGestureRecognizer" && otherGestureRecognizer.view != (grd.presentedViewController as! PanModalPresentable).panScrollable) {
+      == "UIScrollViewPanGestureRecognizer" && grd is PanModalPresentable && otherGestureRecognizer.view != (grd.presentedViewController as? PanModalPresentable)?.panScrollable) {
       return self.config.value(forKey: "interactsWithOuterScrollView") as! Bool
     }
     return false
@@ -49,6 +49,7 @@ class PossiblyTouchesPassableUIView: UIView {
   }
   // I don't really want to talk about it
   override func layoutSubviews() {
+    super.layoutSubviews()
     let outerView = self.config?.value(forKey: "outerView") as? UIView
     if (outerView != nil) {
       removeFromSuperview()
@@ -61,8 +62,6 @@ class PossiblyTouchesPassableUIView: UIView {
     let gr: UIGestureRecognizer = self.gestureRecognizers![0]
     grdelegate = BetterGestureRecognizerDelegateAdapter.init(grd: gr.delegate! as! (UIGestureRecognizerDelegate & UIViewController), config: config!)
     gr.delegate = grdelegate
-    
-    super.layoutSubviews()
   }
 }
 
@@ -137,7 +136,7 @@ class PanModalViewController: UIViewController, PanModalPresentable {
   
   var transitionDuration: Double {
     if isInitialAnimation > 0 && !(self.config?.value(forKey: "initialAnimation") as! Bool)
- {
+    {
       isInitialAnimation -= 1
       return 0.0
     }
@@ -146,7 +145,7 @@ class PanModalViewController: UIViewController, PanModalPresentable {
   
   var panModalBackgroundColor: UIColor {
     return UIColor.black.withAlphaComponent(CGFloat(truncating: self.config?.value(forKey: "backgroundOpacity") as! NSNumber))
-
+    
   }
   var anchorModalToLongForm: Bool {
     return self.config?.value(forKey: "anchorModalToLongForm") as! Bool
