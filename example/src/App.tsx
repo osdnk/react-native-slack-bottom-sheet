@@ -9,7 +9,7 @@ import {
   TextInput,
 } from 'react-native';
 
-import { Screen, enableScreens } from 'react-native-screens';
+import { enableScreens } from 'react-native-screens';
 
 enableScreens();
 
@@ -92,8 +92,8 @@ export default function ConfigScreen() {
   const [visible, setVisible] = React.useState(false);
 
   return (
-    <View>
-      <Screen style={{ height: 500 }}>
+    <View style={{ height: '100%' }}>
+      <View style={{ height: '90%' }}>
         {visible ? (
           <Modal
             topOffset={topOffset}
@@ -256,8 +256,8 @@ export default function ConfigScreen() {
             </View>
           </View>
         </ScrollView>
-      </Screen>
-      <View style={{ height: 300, width: '100%', backgroundColor: 'red' }} />
+      </View>
+      <View style={{ height: '10%', backgroundColor: 'red' }} />
     </View>
   );
 }

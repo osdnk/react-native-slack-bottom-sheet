@@ -111,39 +111,27 @@
 }
 
 - (void)layoutSubviews {
+  [self setPresentGlobally:_presentGlobally];
   [super layoutSubviews];
-  if (!_presentGlobally) {
-     outerView = self.reactSuperview;
-  }
-  RCTExecuteOnMainQueue(^{
-    UIView *superScreen = self;
-    BOOL isRNScreen = NO;
-    while (![superScreen isKindOfClass:RCTRootView.class] && !isRNScreen) {
-      superScreen  = [superScreen reactSuperview];
-      NSString *name = NSStringFromClass ([superScreen class]);
-      // React-native-screens changes react hierarchy and searching
-      // for root view is not positive. It does not follow any
-      // good programming rules but I wished not to add RNS as
-      // a dependency and make it workable and without this lib
-      isRNScreen = ([name isEqualToString:@"RNSScreenView"]);
-    }
-    UIViewController *vc = nil;
-    if (isRNScreen) {
-      vc = [superScreen valueForKey:@"controller"];
-    }
-    
-    UIViewController *rootViewController = vc ? vc : [UIApplication sharedApplication].delegate.window.rootViewController;
-    object_setClass(self->addedSubview, [HelperView class]);
-    [(HelperView *)self->addedSubview setBridge: self->_bridge];
-    
-    [rootViewController presentPanModalWithView:self->addedSubview config:self];
-  });
+}
+
+- (void)setPresentGlobally:(BOOL)presentGlobally {
+  outerView = presentGlobally ? nil : self.reactSuperview;
+  _presentGlobally = presentGlobally;
 }
 
 
 - (void)addSubview:(UIView *)view {
   if (addedSubview == nil) {
     addedSubview = view;
+    [self setPresentGlobally:_presentGlobally];
+    RCTExecuteOnMainQueue(^{
+      UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
+      object_setClass(self->addedSubview, [HelperView class]);
+      [(HelperView *)self->addedSubview setBridge: self->_bridge];
+      
+      [rootViewController presentPanModalWithView:self->addedSubview config:self];
+    });
   }
 }
 
