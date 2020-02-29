@@ -51,6 +51,7 @@
 @property (nonatomic) BOOL blocksBackgroundTouches;
 @property (nonatomic) BOOL interactsWithOuterScrollView;
 @property (nonatomic) BOOL presentGlobally;
+@property (nonatomic) BOOL initialAnimation;
 @property (nonatomic, nonnull) NSNumber *headerHeight;
 @property (nonatomic, nonnull) NSNumber *shortFormHeight;
 @property (nonatomic) BOOL startFromShortForm;
@@ -88,6 +89,7 @@
     _startFromShortForm = false;
     _presentGlobally = true;
     _interactsWithOuterScrollView = false;
+    _initialAnimation = true;
   }
   return self;
 }
@@ -163,6 +165,7 @@ RCT_EXPORT_VIEW_PROPERTY(onWillDismiss, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onDidDismiss, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(presentGlobally, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(interactsWithOuterScrollView, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(initialAnimation, BOOL)
 
 - (UIView *)view {
   return [[InvisibleView alloc] initWithBridge:self.bridge];

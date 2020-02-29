@@ -133,7 +133,14 @@ class PanModalViewController: UIViewController, PanModalPresentable {
     return CGFloat(truncating: self.config?.value(forKey: "springDamping") as! NSNumber)
   }
   
+  var isInitialAnimation = 3
+  
   var transitionDuration: Double {
+    if isInitialAnimation > 0 && !(self.config?.value(forKey: "initialAnimation") as! Bool)
+ {
+      isInitialAnimation -= 1
+      return 0.0
+    }
     return Double(truncating: self.config?.value(forKey: "transitionDuration") as! NSNumber)
   }
   

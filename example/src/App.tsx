@@ -66,6 +66,7 @@ export default function ConfigScreen() {
   const [cornerRadius, setCornerRadius] = React.useState(8);
   const [springDamping, setSpringDamping] = React.useState(0.8);
   const [presentGlobally, setPresentGlobally] = React.useState(true);
+  const [initialAnimation, setInitialAnimation] = React.useState(true);
   const [transitionDuration, setTransitionDuration] = React.useState(0.5);
   const [anchorModalToLongForm, setAnchorModalToLongForm] = React.useState(
     true
@@ -124,6 +125,7 @@ export default function ConfigScreen() {
             }
             interactsWithOuterScrollView={interactsWithOuterScrollView}
             presentGlobally={presentGlobally}
+            initialAnimation={initialAnimation}
           >
             <App />
           </Modal>
@@ -222,6 +224,11 @@ export default function ConfigScreen() {
               <Switch
                 value={allowsDragToDismiss}
                 onValueChange={setAllowsDragToDismiss}
+              />
+              <Text>initialAnimation</Text>
+              <Switch
+                value={initialAnimation}
+                onValueChange={setInitialAnimation}
               />
               <Text>blocksBackgroundTouches</Text>
               <Switch
