@@ -89,11 +89,15 @@ export default function ConfigScreen() {
   const [headerHeight, setHeaderHeight] = React.useState(50);
   const [shortFormHeight, setShortFormHeight] = React.useState(500);
   const [startFromShortForm, setStartFromShortForm] = React.useState(false);
+  const [
+    interactsWithOuterScrollView,
+    setInteractsWithOuterScrollView,
+  ] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
 
   return (
     <View style={{ height: '100%' }}>
-      <View style={{ height: '90%' }}>
+      <ScrollView horizontal={true} style={{ height: '90%' }}>
         {visible ? (
           <Modal
             topOffset={topOffset}
@@ -118,6 +122,7 @@ export default function ConfigScreen() {
             onWillTransition={({ type }: { type: String }) =>
               console.warn('onWillTransition', type)
             }
+            interactsWithOuterScrollView={interactsWithOuterScrollView}
             presentGlobally={presentGlobally}
           >
             <App />
@@ -223,6 +228,11 @@ export default function ConfigScreen() {
                 value={blocksBackgroundTouches}
                 onValueChange={setBlocksBackgroundTouches}
               />
+              <Text>interactsWithOuterScrollview</Text>
+              <Switch
+                value={interactsWithOuterScrollView}
+                onValueChange={setInteractsWithOuterScrollView}
+              />
               <Text>allowsTapToDismiss</Text>
               <Switch
                 value={allowsTapToDismiss}
@@ -256,7 +266,7 @@ export default function ConfigScreen() {
             </View>
           </View>
         </ScrollView>
-      </View>
+      </ScrollView>
       <View style={{ height: '10%', backgroundColor: 'red' }} />
     </View>
   );

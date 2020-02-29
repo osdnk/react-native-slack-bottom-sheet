@@ -25,10 +25,6 @@
 
 - (void)setSpecialBounds:(CGRect)bounds {
   [self setBounds:bounds];
-}
-
-- (void)setBounds:(CGRect)bounds {
-  [super setBounds:bounds];
   [[_bridge uiManager] setSize:bounds.size forView:self];
 }
 
@@ -53,6 +49,7 @@
 @property (nonatomic) BOOL shouldRoundTopCorners;
 @property (nonatomic) BOOL showDragIndicator;
 @property (nonatomic) BOOL blocksBackgroundTouches;
+@property (nonatomic) BOOL interactsWithOuterScrollView;
 @property (nonatomic) BOOL presentGlobally;
 @property (nonatomic, nonnull) NSNumber *headerHeight;
 @property (nonatomic, nonnull) NSNumber *shortFormHeight;
@@ -90,6 +87,7 @@
     _shortFormHeight = [[NSNumber alloc] initWithInt:300];;
     _startFromShortForm = false;
     _presentGlobally = true;
+    _interactsWithOuterScrollView = false;
   }
   return self;
 }
@@ -164,6 +162,7 @@ RCT_EXPORT_VIEW_PROPERTY(onWillTransition, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onWillDismiss, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onDidDismiss, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(presentGlobally, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(interactsWithOuterScrollView, BOOL)
 
 - (UIView *)view {
   return [[InvisibleView alloc] initWithBridge:self.bridge];
