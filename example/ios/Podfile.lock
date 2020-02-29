@@ -221,6 +221,8 @@ PODS:
   - reactnativeslackbottomsheet (0.1.0):
     - PanModal
     - React
+  - RNScreens (2.2.0):
+    - React
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -252,6 +254,7 @@ DEPENDENCIES:
   - ReactCommon/jscallinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - reactnativeslackbottomsheet (from `../..`)
+  - RNScreens (from `../node_modules/react-native-screens`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -310,6 +313,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   reactnativeslackbottomsheet:
     :path: "../.."
+  RNScreens:
+    :path: "../node_modules/react-native-screens"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -341,6 +346,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   reactnativeslackbottomsheet: 4ab14b2bd7150fe24a2a87563b5ce947d0d4d506
+  RNScreens: 812b79d384e2bea7eebc4ec981469160d4948fd5
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
 PODFILE CHECKSUM: ad27dba2671d198529d6afd082c35f4f362d9e3b

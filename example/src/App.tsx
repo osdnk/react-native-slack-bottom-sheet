@@ -2,13 +2,16 @@ import React from 'react';
 import {
   Button,
   StyleSheet,
-  SafeAreaView,
   ScrollView,
   View,
   Text,
   Switch,
   TextInput,
 } from 'react-native';
+
+import { Screen, enableScreens } from 'react-native-screens';
+
+enableScreens();
 
 import {
   Header,
@@ -62,6 +65,7 @@ export default function ConfigScreen() {
   const [longFormHeight, setLongFormHeight] = React.useState(null);
   const [cornerRadius, setCornerRadius] = React.useState(8);
   const [springDamping, setSpringDamping] = React.useState(0.8);
+  const [presentGlobally, setPresentGlobally] = React.useState(true);
   const [transitionDuration, setTransitionDuration] = React.useState(0.5);
   const [anchorModalToLongForm, setAnchorModalToLongForm] = React.useState(
     true
@@ -88,14 +92,8 @@ export default function ConfigScreen() {
   const [visible, setVisible] = React.useState(false);
 
   return (
-    <SafeAreaView>
-      <ScrollView contentContainerStyle={{ padding: 12 }}>
-        <Button
-          title="SHOW MODAL"
-          onPress={() => {
-            setVisible(true);
-          }}
-        />
+    <View>
+      <Screen style={{ height: 500 }}>
         {visible ? (
           <Modal
             topOffset={topOffset}
@@ -120,132 +118,147 @@ export default function ConfigScreen() {
             onWillTransition={({ type }: { type: String }) =>
               console.warn('onWillTransition', type)
             }
+            presentGlobally={presentGlobally}
           >
             <App />
           </Modal>
         ) : null}
+        <ScrollView contentContainerStyle={{ padding: 12 }}>
+          <Button
+            title="SHOW MODAL"
+            onPress={() => {
+              setVisible(true);
+            }}
+          />
 
-        <View style={{ flexDirection: 'row' }}>
-          <View style={{ flexDirection: 'column', padding: 10 }}>
-            <Text>topOffset</Text>
-            <TextInput
-              style={{ backgroundColor: 'grey' }}
-              value={topOffset.toString()}
-              keyboardType="numeric"
-              onChange={({ nativeEvent: { text } }) =>
-                setTopOffset(Number(text))
-              }
-            />
-            <Text>cornerRadius</Text>
-            <TextInput
-              style={{ backgroundColor: 'grey' }}
-              value={cornerRadius.toString()}
-              keyboardType="numeric"
-              onChange={({ nativeEvent: { text } }) =>
-                setCornerRadius(Number(text))
-              }
-            />
-            <Text>springDamping</Text>
-            <TextInput
-              style={{ backgroundColor: 'grey' }}
-              value={springDamping.toString()}
-              keyboardType="numeric"
-              onChange={({ nativeEvent: { text } }) =>
-                setSpringDamping(Number(text))
-              }
-            />
-            <Text>transitionDuration</Text>
-            <TextInput
-              style={{ backgroundColor: 'grey' }}
-              value={transitionDuration.toString()}
-              keyboardType="numeric"
-              onChange={({ nativeEvent: { text } }) =>
-                setTransitionDuration(Number(text))
-              }
-            />
-            <Text>headerHeight</Text>
-            <TextInput
-              style={{ backgroundColor: 'grey' }}
-              value={headerHeight.toString()}
-              keyboardType="numeric"
-              onChange={({ nativeEvent: { text } }) =>
-                setHeaderHeight(Number(text))
-              }
-            />
-            <Text>shortFormHeight</Text>
-            <TextInput
-              style={{ backgroundColor: 'grey' }}
-              value={shortFormHeight.toString()}
-              keyboardType="numeric"
-              onChange={({ nativeEvent: { text } }) =>
-                setShortFormHeight(Number(text))
-              }
-            />
-            <Text>longFormHeight</Text>
-            <TextInput
-              style={{ backgroundColor: 'grey' }}
-              value={longFormHeight === null ? '' : longFormHeight.toString()}
-              keyboardType="numeric"
-              onChange={({ nativeEvent: { text } }) =>
-                setLongFormHeight(text === '' ? null : Number(text))
-              }
-            />
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'column', padding: 10 }}>
+              <Text>topOffset</Text>
+              <TextInput
+                style={{ backgroundColor: 'grey' }}
+                value={topOffset.toString()}
+                keyboardType="numeric"
+                onChange={({ nativeEvent: { text } }) =>
+                  setTopOffset(Number(text))
+                }
+              />
+              <Text>cornerRadius</Text>
+              <TextInput
+                style={{ backgroundColor: 'grey' }}
+                value={cornerRadius.toString()}
+                keyboardType="numeric"
+                onChange={({ nativeEvent: { text } }) =>
+                  setCornerRadius(Number(text))
+                }
+              />
+              <Text>springDamping</Text>
+              <TextInput
+                style={{ backgroundColor: 'grey' }}
+                value={springDamping.toString()}
+                keyboardType="numeric"
+                onChange={({ nativeEvent: { text } }) =>
+                  setSpringDamping(Number(text))
+                }
+              />
+              <Text>transitionDuration</Text>
+              <TextInput
+                style={{ backgroundColor: 'grey' }}
+                value={transitionDuration.toString()}
+                keyboardType="numeric"
+                onChange={({ nativeEvent: { text } }) =>
+                  setTransitionDuration(Number(text))
+                }
+              />
+              <Text>headerHeight</Text>
+              <TextInput
+                style={{ backgroundColor: 'grey' }}
+                value={headerHeight.toString()}
+                keyboardType="numeric"
+                onChange={({ nativeEvent: { text } }) =>
+                  setHeaderHeight(Number(text))
+                }
+              />
+              <Text>shortFormHeight</Text>
+              <TextInput
+                style={{ backgroundColor: 'grey' }}
+                value={shortFormHeight.toString()}
+                keyboardType="numeric"
+                onChange={({ nativeEvent: { text } }) =>
+                  setShortFormHeight(Number(text))
+                }
+              />
+              <Text>longFormHeight</Text>
+              <TextInput
+                style={{ backgroundColor: 'grey' }}
+                value={longFormHeight === null ? '' : longFormHeight.toString()}
+                keyboardType="numeric"
+                onChange={({ nativeEvent: { text } }) =>
+                  setLongFormHeight(text === '' ? null : Number(text))
+                }
+              />
+            </View>
+            <View style={{ flexDirection: 'column' }}>
+              <Text>anchorModalToLongForm</Text>
+              <Switch
+                value={anchorModalToLongForm}
+                onValueChange={setAnchorModalToLongForm}
+              />
+              <Text>isShortFormEnabled</Text>
+              <Switch
+                value={isShortFormEnabled}
+                onValueChange={setIsShortFormEnabled}
+              />
+              <Text>isHapticFeedbackEnabled</Text>
+              <Switch
+                value={isHapticFeedbackEnabled}
+                onValueChange={setIsHapticFeedbackEnabled}
+              />
+              <Text>allowsDragToDismiss</Text>
+              <Switch
+                value={allowsDragToDismiss}
+                onValueChange={setAllowsDragToDismiss}
+              />
+              <Text>blocksBackgroundTouches</Text>
+              <Switch
+                value={blocksBackgroundTouches}
+                onValueChange={setBlocksBackgroundTouches}
+              />
+              <Text>allowsTapToDismiss</Text>
+              <Switch
+                value={allowsTapToDismiss}
+                onValueChange={setAllowsTapToDismiss}
+              />
+              <Text>startFromShortForm</Text>
+              <Switch
+                value={startFromShortForm}
+                onValueChange={setStartFromShortForm}
+              />
+              <Text>showDragIndicator</Text>
+              <Switch
+                value={showDragIndicator}
+                onValueChange={setShowDragIndicator}
+              />
+              <Text>presentGlobally</Text>
+              <Switch
+                value={presentGlobally}
+                onValueChange={setPresentGlobally}
+              />
+              <Text>isUserInteractionEnabled</Text>
+              <Switch
+                value={isUserInteractionEnabled}
+                onValueChange={setIsUserInteractionEnabled}
+              />
+              <Text>shouldRoundTopCorners</Text>
+              <Switch
+                value={shouldRoundTopCorners}
+                onValueChange={setShouldRoundTopCorners}
+              />
+            </View>
           </View>
-          <View style={{ flexDirection: 'column' }}>
-            <Text>anchorModalToLongForm</Text>
-            <Switch
-              value={anchorModalToLongForm}
-              onValueChange={setAnchorModalToLongForm}
-            />
-            <Text>isShortFormEnabled</Text>
-            <Switch
-              value={isShortFormEnabled}
-              onValueChange={setIsShortFormEnabled}
-            />
-            <Text>isHapticFeedbackEnabled</Text>
-            <Switch
-              value={isHapticFeedbackEnabled}
-              onValueChange={setIsHapticFeedbackEnabled}
-            />
-            <Text>allowsDragToDismiss</Text>
-            <Switch
-              value={allowsDragToDismiss}
-              onValueChange={setAllowsDragToDismiss}
-            />
-            <Text>blocksBackgroundTouches</Text>
-            <Switch
-              value={blocksBackgroundTouches}
-              onValueChange={setBlocksBackgroundTouches}
-            />
-            <Text>allowsTapToDismiss</Text>
-            <Switch
-              value={allowsTapToDismiss}
-              onValueChange={setAllowsTapToDismiss}
-            />
-            <Text>startFromShortForm</Text>
-            <Switch
-              value={startFromShortForm}
-              onValueChange={setStartFromShortForm}
-            />
-            <Text>showDragIndicator</Text>
-            <Switch
-              value={showDragIndicator}
-              onValueChange={setShowDragIndicator}
-            />
-            <Text>isUserInteractionEnabled</Text>
-            <Switch
-              value={isUserInteractionEnabled}
-              onValueChange={setIsUserInteractionEnabled}
-            />
-            <Text>shouldRoundTopCorners</Text>
-            <Switch
-              value={shouldRoundTopCorners}
-              onValueChange={setShouldRoundTopCorners}
-            />
-          </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </Screen>
+      <View style={{ height: 300, width: '100%', backgroundColor: 'red' }} />
+    </View>
   );
 }
 

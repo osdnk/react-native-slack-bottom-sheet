@@ -4,12 +4,32 @@ import PanModal
 
 class PossiblyTouchesPassableUIView: UIView {
   var config: NSObject?
+  var topLayoutGuideLength: CGFloat?
+  
+  var topOffset: CGFloat {
+    let topOffset: CGFloat = CGFloat(truncating: self.config?.value(forKey: "topOffset") as! NSNumber)
+    return topLayoutGuideLength! + topOffset
+  }
+
   override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
     let blocksBackgroundTocuhes = self.config?.value(forKey: "blocksBackgroundTouches") as! Bool
     if (blocksBackgroundTocuhes || self.subviews[1].frame.contains(point)) {
       return super.hitTest(point, with: event)
     }
     return nil
+  }
+  // I don't really want to talk about it
+  override func layoutSubviews() {
+    let outerView = self.config?.value(forKey: "outerView") as? UIView
+    if (outerView != nil) {
+      removeFromSuperview()
+      let helperView: UIView = self.subviews[1].subviews[0]
+      let bounds = outerView!.bounds
+      let newBounds = CGRect.init(x: bounds.minX, y: bounds.minY, width: bounds.width, height: bounds.height - topOffset)
+      helperView.setValue(newBounds, forKeyPath: "specialBounds")
+      outerView?.addSubview(self)
+    }
+    super.layoutSubviews()
   }
 }
 
@@ -107,6 +127,7 @@ class PanModalViewController: UIViewController, PanModalPresentable {
     if !(pview is PossiblyTouchesPassableUIView) {
       object_setClass(pview, PossiblyTouchesPassableUIView.self)
       (pview as! PossiblyTouchesPassableUIView).config = self.config
+      (pview as! PossiblyTouchesPassableUIView).topLayoutGuideLength = topLayoutGuide.length
     }
     return self.config?.value(forKey: "shouldRoundTopCorners") as! Bool
   }
