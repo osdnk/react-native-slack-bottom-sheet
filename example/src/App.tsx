@@ -67,6 +67,9 @@ export default function ConfigScreen() {
     true
   );
   const [allowsDragToDismiss, setAllowsDragToDismiss] = React.useState(true);
+  const [blocksBackgroundTouches, setBlocksBackgroundTouches] = React.useState(
+    true
+  );
   const [allowsTapToDismiss, setAllowsTapToDismiss] = React.useState(true);
   const [
     isUserInteractionEnabled,
@@ -107,6 +110,7 @@ export default function ConfigScreen() {
             isUserInteractionEnabled={isUserInteractionEnabled}
             isHapticFeedbackEnabled={isHapticFeedbackEnabled}
             shouldRoundTopCorners={shouldRoundTopCorners}
+            blocksBackgroundTouches={blocksBackgroundTouches}
             showDragIndicator={showDragIndicator}
             headerHeight={headerHeight}
             shortFormHeight={400}
@@ -207,6 +211,11 @@ export default function ConfigScreen() {
             <Switch
               value={allowsDragToDismiss}
               onValueChange={setAllowsDragToDismiss}
+            />
+            <Text>blocksBackgroundTouches</Text>
+            <Switch
+              value={blocksBackgroundTouches}
+              onValueChange={setBlocksBackgroundTouches}
             />
             <Text>allowsTapToDismiss</Text>
             <Switch

@@ -41,6 +41,7 @@
 @property (nonatomic) BOOL isHapticFeedbackEnabled;
 @property (nonatomic) BOOL shouldRoundTopCorners;
 @property (nonatomic) BOOL showDragIndicator;
+@property (nonatomic) BOOL blocksBackgroundTouches;
 @property (nonatomic, nonnull) NSNumber *headerHeight;
 @property (nonatomic, nonnull) NSNumber *shortFormHeight;
 @property (nonatomic) BOOL startFromShortForm;
@@ -71,6 +72,7 @@
     _isHapticFeedbackEnabled = true;
     _shouldRoundTopCorners = true;
     _showDragIndicator = true;
+    _blocksBackgroundTouches = true;
     _headerHeight = [[NSNumber alloc] initWithInt:0];
     _shortFormHeight = [[NSNumber alloc] initWithInt:300];;
     _startFromShortForm = false;
@@ -78,19 +80,19 @@
   return self;
 }
 
-- (void) callWillDismiss {
+- (void)callWillDismiss {
   _onWillDismiss(@{});
 }
 
-- (void) callDidDismiss {
+- (void)callDidDismiss {
   _onDidDismiss(@{});
 }
 
-- (void) callWillTransitionLong {
+- (void)callWillTransitionLong {
   _onWillTransition(@{@"type": @"long"});
 }
 
-- (void) callWillTransitionShort {
+- (void)callWillTransitionShort {
   _onWillTransition(@{@"type": @"short"});
 }
 
@@ -130,6 +132,7 @@ RCT_EXPORT_VIEW_PROPERTY(anchorModalToLongForm, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(allowsTapToDismiss, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(allowsDragToDismiss, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(isUserInteractionEnabled, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(blocksBackgroundTouches, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(isHapticFeedbackEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(shouldRoundTopCorners, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(showDragIndicator, BOOL)
