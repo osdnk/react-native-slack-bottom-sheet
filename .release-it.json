@@ -1,0 +1,20 @@
+{
+  "scripts": {
+    "changelog": "conventional-changelog -p angular | tail -n +3"
+  },
+  "git": {
+    "commitMessage": "chore: release %s",
+    "tagName": "v%s"
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": "angular"
+    }
+  },
+  "npm": {
+    "publish": true
+  },
+  "github": {
+    "release": true
+  }
+}
