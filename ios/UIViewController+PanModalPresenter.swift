@@ -21,7 +21,7 @@ class BetterGestureRecognizerDelegateAdapter: NSObject, UIGestureRecognizerDeleg
   public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
     
     if (String(describing: type(of: otherGestureRecognizer))
-      == "UIScrollViewPanGestureRecognizer" && grd is PanModalPresentable && otherGestureRecognizer.view != (grd.presentedViewController as? PanModalPresentable)?.panScrollable) {
+      == "UIScrollViewPanGestureRecognizer" && grd.presentedViewController is PanModalPresentable && otherGestureRecognizer.view != (grd.presentedViewController as? PanModalPresentable)?.panScrollable) {
       return self.config.value(forKey: "interactsWithOuterScrollView") as! Bool
     }
     return false
