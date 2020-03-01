@@ -23,7 +23,7 @@
   _bridge = bridge;
 }
 
-- (void) reactSetFrame:(CGRect)frame {
+- (void)reactSetFrame:(CGRect)frame {
   // shrug
 }
 
@@ -98,6 +98,10 @@
     _backgroundOpacity = [[NSNumber alloc] initWithDouble:0.7];
   }
   return self;
+}
+
+-(void)reactSetFrame:(CGRect)frame {
+  // shrug
 }
 
 - (void)callWillDismiss {
