@@ -7,13 +7,13 @@ React Native Bottom Sheet
 It's WIP so don't use it now
 
  - [ ] Add usage example in readme
- - [ ] Add callbacks on close / open / transition
- - [ ] Describe props
- - [ ] Export more options from Slack library
- - [ ] Add stub on Android and explanation
- - [ ] Add commit name check
- - [ ] Squash commits and release
-
+ - [x] Add callbacks on close / open / transition
+ - [x] Describe props
+ - [x] Export more options from Slack library
+ - [x] Add stub on Android and explanation
+ - [x] Add commit name check
+ - [x] Squash commits and release
+ - [ ] add typings to native component and probably wrapper 
 ## Installation
 1. Change `platform :ios, '9.0'` to `platform :ios, '10.0'` in Podfile
 2. Open `ios/YourAppName.xcworkplace` in Xcode
