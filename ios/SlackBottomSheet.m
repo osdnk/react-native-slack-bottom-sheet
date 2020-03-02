@@ -114,7 +114,7 @@
 -(void) didMoveToWindow {
   if (self.window == nil) {
     BOOL isBridgeInvalidating = [[_bridge valueForKey:@"didInvalidate"] boolValue];
-    _isHiding = _presentGlobally || isBridgeInvalidating;
+    _isHiding = _presentGlobally || isBridgeInvalidating || _bridge == nil;
     [self setVisible:false];
   }
   [super didMoveToWindow];
