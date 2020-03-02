@@ -27,27 +27,23 @@ class BetterGestureRecognizerDelegateAdapter: NSObject, UIGestureRecognizerDeleg
     return false
   }
 }
+
 class PossiblyTouchesPassableUIView: UIView {
   var grdelegate: UIGestureRecognizerDelegate?
   var config: NSObject?
   var topLayoutGuideLength: CGFloat?
-  var internalGestureRecognizers: [UIGestureRecognizer]?
+  var oldClass: AnyClass?
+  var justModifiedClass: NSNumber?
   
-  var topOffset: CGFloat {
-    let topOffset: CGFloat = CGFloat(truncating: self.config?.value(forKey: "topOffset") as! NSNumber)
-    return topLayoutGuideLength! + topOffset
-  }
   
   override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-    
-    
     let blocksBackgroundTocuhes = self.config?.value(forKey: "blocksBackgroundTouches") as! Bool
     if (blocksBackgroundTocuhes || self.subviews[1].frame.contains(point)) {
       return super.hitTest(point, with: event)
     }
     return nil
   }
-  // I don't really want to talk about it
+  //  // I don't really want to talk about it
   override func layoutSubviews() {
     super.layoutSubviews()
     let outerView = self.config?.value(forKey: "outerView") as? UIView
@@ -55,6 +51,10 @@ class PossiblyTouchesPassableUIView: UIView {
       removeFromSuperview()
       let helperView: UIView = self.subviews[1].subviews[0]
       let bounds = outerView!.bounds
+      var topOffset: CGFloat {
+        let topOffset: CGFloat = CGFloat(truncating: self.config?.value(forKey: "topOffset") as! NSNumber)
+        return topLayoutGuideLength! + topOffset
+      }
       let newBounds = CGRect.init(x: bounds.minX, y: bounds.minY, width: bounds.width, height: bounds.height - topOffset)
       helperView.setValue(newBounds, forKeyPath: "specialBounds")
       outerView?.addSubview(self)
@@ -62,8 +62,33 @@ class PossiblyTouchesPassableUIView: UIView {
     let gr: UIGestureRecognizer = self.gestureRecognizers![0]
     grdelegate = BetterGestureRecognizerDelegateAdapter.init(grd: gr.delegate! as! (UIGestureRecognizerDelegate & UIViewController), config: config!)
     gr.delegate = grdelegate
+    if outerView == nil {
+      makeOldClass()
+    }
+  }
+  
+  func makeOldClass() {
+    if self.oldClass != nil {
+      let oldClassMem = self.oldClass!
+      self.oldClass = nil
+      object_setClass(self, oldClassMem)
+    }
+  }
+  
+  override func didMoveToWindow() {
+    if self.window == nil {
+      if (justModifiedClass?.isEqual(to: true))! {
+        justModifiedClass = NSNumber.init(value: false)
+        super.didMoveToWindow()
+        return
+      }
+      makeOldClass()
+    }
+    super.didMoveToWindow()
   }
 }
+
+var PossiblyTouchesPassableUITransitionView: AnyClass?  = nil;
 
 class PanModalViewController: UIViewController, PanModalPresentable {
   var config: NSObject?
@@ -168,9 +193,12 @@ class PanModalViewController: UIViewController, PanModalPresentable {
   var shouldRoundTopCorners: Bool {
     let pview = view.superview!.superview!
     if !(pview is PossiblyTouchesPassableUIView) {
+      let oldClass: AnyClass = type(of: pview)
       object_setClass(pview, PossiblyTouchesPassableUIView.self)
       (pview as! PossiblyTouchesPassableUIView).config = self.config
-      (pview as! PossiblyTouchesPassableUIView).topLayoutGuideLength = topLayoutGuide.length
+      (pview as! PossiblyTouchesPassableUIView).topLayoutGuideLength = self.topLayoutGuide.length
+      (pview as! PossiblyTouchesPassableUIView).oldClass = oldClass
+      (pview as! PossiblyTouchesPassableUIView).justModifiedClass = NSNumber.init(value: true)
     }
     return self.config?.value(forKey: "shouldRoundTopCorners") as! Bool
   }

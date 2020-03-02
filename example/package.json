@@ -10,6 +10,7 @@
   "dependencies": {
     "react": "16.9.0",
     "react-native": "0.61.5",
+    "react-native-gesture-handler": "^1.6.0",
     "react-native-screens": "^2.2.0"
   },
   "devDependencies": {

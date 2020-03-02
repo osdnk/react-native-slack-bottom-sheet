@@ -10,9 +10,7 @@ import {
   TextInput,
 } from 'react-native';
 
-import { enableScreens } from 'react-native-screens';
-
-enableScreens();
+import { RectButton } from 'react-native-gesture-handler';
 
 import {
   Header,
@@ -22,10 +20,26 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import Modal from 'react-native-slack-bottom-sheet';
-function App() {
+function App({ setVisible, setComponentMounted }) {
   return (
     <View style={[StyleSheet.absoluteFillObject]}>
       <ScrollView style={styles.scrollView}>
+        <RectButton
+          onPress={() => {
+            console.warn('X');
+            setVisible(false);
+          }}
+        >
+          <Text>HIDE</Text>
+        </RectButton>
+        <RectButton
+          onPress={() => {
+            console.warn('X');
+            setComponentMounted(false);
+          }}
+        >
+          <Text>UNMOUNT</Text>
+        </RectButton>
         <Header />
         <View style={styles.body}>
           <View style={styles.sectionContainer}>
@@ -66,7 +80,7 @@ export default function ConfigScreen() {
   const [longFormHeight, setLongFormHeight] = React.useState(null);
   const [cornerRadius, setCornerRadius] = React.useState(8);
   const [springDamping, setSpringDamping] = React.useState(0.8);
-  const [presentGlobally, setPresentGlobally] = React.useState(true);
+  const [presentGlobally, setPresentGlobally] = React.useState(false);
   const [initialAnimation, setInitialAnimation] = React.useState(true);
   const [transitionDuration, setTransitionDuration] = React.useState(0.5);
   const [anchorModalToLongForm, setAnchorModalToLongForm] = React.useState(
@@ -92,17 +106,19 @@ export default function ConfigScreen() {
   const [headerHeight, setHeaderHeight] = React.useState(50);
   const [shortFormHeight, setShortFormHeight] = React.useState(500);
   const [startFromShortForm, setStartFromShortForm] = React.useState(false);
+  const [componentMounted, setComponentMounted] = React.useState(true);
   const [
     interactsWithOuterScrollView,
     setInteractsWithOuterScrollView,
   ] = React.useState(false);
-  const [visible, setVisible] = React.useState(false);
+  const [visible, setVisible] = React.useState(true);
 
   return (
     <View style={{ height: '100%' }}>
       <ScrollView horizontal={true} style={{ height: '90%' }}>
-        {visible ? (
+        {componentMounted ? (
           <Modal
+            visible={visible}
             topOffset={topOffset}
             backgroundOpacity={backgroundOpacity}
             isShortFormEnabled={isShortFormEnabled}
@@ -130,10 +146,13 @@ export default function ConfigScreen() {
             presentGlobally={presentGlobally}
             initialAnimation={initialAnimation}
           >
-            <App />
+            <App
+              setVisible={setVisible}
+              setComponentMounted={setComponentMounted}
+            />
           </Modal>
         ) : null}
-        <ScrollView contentContainerStyle={{ padding: 12 }}>
+        <ScrollView contentContainerStyle={{ paddingTop: 30 }}>
           <Button
             title="SHOW MODAL"
             onPress={() => {
@@ -217,6 +236,11 @@ export default function ConfigScreen() {
               />
             </View>
             <View style={{ flexDirection: 'column' }}>
+              <Text>componentMounted</Text>
+              <Switch
+                value={componentMounted}
+                onValueChange={setComponentMounted}
+              />
               <Text>anchorModalToLongForm</Text>
               <Switch
                 value={anchorModalToLongForm}

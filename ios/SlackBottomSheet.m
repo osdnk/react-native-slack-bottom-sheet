@@ -69,6 +69,9 @@
   __weak RCTBridge *_bridge;
   UIView* addedSubview;
   UIView* outerView;
+  BOOL _visible;
+  BOOL _modalPresented;
+  BOOL _isHiding;
 }
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge {
@@ -95,13 +98,26 @@
     _presentGlobally = true;
     _interactsWithOuterScrollView = false;
     _initialAnimation = true;
+    _visible = true;
     _backgroundOpacity = [[NSNumber alloc] initWithDouble:0.7];
+    _modalPresented = false;
+    _isHiding = false;
+    
   }
   return self;
 }
 
 -(void)reactSetFrame:(CGRect)frame {
   // shrug
+}
+
+-(void) didMoveToWindow {
+  if (self.window == nil) {
+    BOOL isBridgeInvalidating = [[_bridge valueForKey:@"didInvalidate"] boolValue];
+    _isHiding = _presentGlobally || isBridgeInvalidating;
+    [self setVisible:false];
+  }
+  [super didMoveToWindow];
 }
 
 - (void)callWillDismiss {
@@ -130,19 +146,47 @@
   _presentGlobally = presentGlobally;
 }
 
-
-- (void)addSubview:(UIView *)view {
-  if (addedSubview == nil) {
-    addedSubview = view;
-    [self setPresentGlobally:_presentGlobally];
+- (void)setVisible:(BOOL)visible {
+  _visible = visible;
+  [self setPresentGlobally:_presentGlobally];
+  if (visible) {
+    if (self->addedSubview == nil) {
+      return;
+    }
     RCTExecuteOnMainQueue(^{
+      if (self->_modalPresented) {
+        return;
+      }
       UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
       object_setClass(self->addedSubview, [HelperView class]);
       [(HelperView *)self->addedSubview setBridge: self->_bridge];
       
       [rootViewController presentPanModalWithView:self->addedSubview config:self];
+      self->_modalPresented = YES;
+    });
+  } else {
+    RCTExecuteOnMainQueue(^{
+      if (!self->_modalPresented) {
+        return;
+      }
+      UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
+      [[rootViewController presentedViewController] dismissViewControllerAnimated:!self->_isHiding completion:nil];
+      if (self->_isHiding) {
+        self->addedSubview = nil;
+      }
+      self->_isHiding = false;
+      self->_modalPresented = NO;
     });
   }
+}
+
+
+- (void)addSubview:(UIView *)view {
+  if (addedSubview == nil) {
+    addedSubview = view;
+    [self setVisible:_visible];
+  }
+  addedSubview = view;
 }
 
 @end
@@ -177,6 +221,7 @@ RCT_EXPORT_VIEW_PROPERTY(onDidDismiss, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(presentGlobally, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(interactsWithOuterScrollView, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(initialAnimation, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(visible, BOOL)
 
 - (UIView *)view {
   return [[InvisibleView alloc] initWithBridge:self.bridge];
