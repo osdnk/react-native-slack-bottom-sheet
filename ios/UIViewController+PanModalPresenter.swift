@@ -51,10 +51,7 @@ class PossiblyTouchesPassableUIView: UIView {
       removeFromSuperview()
       let helperView: UIView = self.subviews[1].subviews[0]
       let bounds = outerView!.bounds
-      var topOffset: CGFloat {
-        let topOffset: CGFloat = CGFloat(truncating: self.config?.value(forKey: "topOffset") as! NSNumber)
-        return topLayoutGuideLength! + topOffset
-      }
+      let topOffset:CGFloat = (topLayoutGuideLength ?? 0) + CGFloat(truncating: self.config?.value(forKey: "topOffset") as! NSNumber)
       let newBounds = CGRect.init(x: bounds.minX, y: bounds.minY, width: bounds.width, height: bounds.height - topOffset)
       helperView.setValue(newBounds, forKeyPath: "specialBounds")
       outerView?.addSubview(self)

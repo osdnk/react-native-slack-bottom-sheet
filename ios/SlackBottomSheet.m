@@ -101,7 +101,7 @@
     _visible = true;
     _backgroundOpacity = [[NSNumber alloc] initWithDouble:0.7];
     _modalPresented = false;
-    _isHiding = false;
+    _isHiding = true;
     
   }
   return self;
@@ -171,9 +171,6 @@
       }
       UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
       [[rootViewController presentedViewController] dismissViewControllerAnimated:!self->_isHiding completion:nil];
-      if (self->_isHiding) {
-        self->addedSubview = nil;
-      }
       self->_isHiding = false;
       self->_modalPresented = NO;
     });
