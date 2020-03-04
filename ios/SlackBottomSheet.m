@@ -57,6 +57,7 @@
 @property (nonatomic) BOOL interactsWithOuterScrollView;
 @property (nonatomic) BOOL presentGlobally;
 @property (nonatomic) BOOL initialAnimation;
+@property (nonatomic) BOOL unmountAnimation;
 @property (nonatomic, nonnull) NSNumber *headerHeight;
 @property (nonatomic, nonnull) NSNumber *shortFormHeight;
 @property (nonatomic) BOOL startFromShortForm;
@@ -98,6 +99,7 @@
     _presentGlobally = true;
     _interactsWithOuterScrollView = false;
     _initialAnimation = true;
+    _unmountAnimation = true;
     _visible = true;
     _backgroundOpacity = [[NSNumber alloc] initWithDouble:0.7];
     _modalPresented = false;
@@ -115,6 +117,9 @@
   if (self.window == nil) {
     BOOL isBridgeInvalidating = [[_bridge valueForKey:@"didInvalidate"] boolValue];
     _isHiding = _presentGlobally || isBridgeInvalidating || _bridge == nil;
+    if (!isBridgeInvalidating && !_unmountAnimation) {
+      self.transitionDuration = [[NSNumber alloc] initWithDouble: 0];
+    }
     [self setVisible:false];
   }
   [super didMoveToWindow];
@@ -137,13 +142,13 @@
 }
 
 - (void)layoutSubviews {
+  [super layoutSubviews];
   [self setPresentGlobally:_presentGlobally];
   [self setVisible:_visible];
-  [super layoutSubviews];
 }
 
 - (void)setPresentGlobally:(BOOL)presentGlobally {
-  outerView = presentGlobally ? nil : self.superview;
+  outerView = presentGlobally ? nil : self.reactSuperview;
   _presentGlobally = presentGlobally;
 }
 
@@ -222,6 +227,7 @@ RCT_EXPORT_VIEW_PROPERTY(onDidDismiss, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(presentGlobally, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(interactsWithOuterScrollView, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(initialAnimation, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(unmountAnimation, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(visible, BOOL)
 
 - (UIView *)view {
