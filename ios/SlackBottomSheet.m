@@ -138,11 +138,12 @@
 
 - (void)layoutSubviews {
   [self setPresentGlobally:_presentGlobally];
+  [self setVisible:_visible];
   [super layoutSubviews];
 }
 
 - (void)setPresentGlobally:(BOOL)presentGlobally {
-  outerView = presentGlobally ? nil : self.reactSuperview;
+  outerView = presentGlobally ? nil : self.superview;
   _presentGlobally = presentGlobally;
 }
 
@@ -150,11 +151,14 @@
   _visible = visible;
   [self setPresentGlobally:_presentGlobally];
   if (visible) {
-    if (self->addedSubview == nil) {
-      return;
-    }
     RCTExecuteOnMainQueue(^{
+      if (self->outerView == nil && !_presentGlobally) {
+        return;
+      }
       if (self->_modalPresented) {
+        return;
+      }
+      if (self->addedSubview == nil) {
         return;
       }
       UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;

@@ -47,7 +47,7 @@ class PossiblyTouchesPassableUIView: UIView {
   override func layoutSubviews() {
     super.layoutSubviews()
     let outerView = self.config?.value(forKey: "outerView") as? UIView
-    if (outerView != nil) {
+    if (!(self.config!.value(forKey: "presentGlobally") as! Bool)) {
       removeFromSuperview()
       let helperView: UIView = self.subviews[1].subviews[0]
       let bounds = outerView!.bounds
