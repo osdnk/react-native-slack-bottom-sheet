@@ -1,6 +1,6 @@
 {
   "name": "react-native-slack-bottom-sheet",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "React Native Bottom Sheet",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
