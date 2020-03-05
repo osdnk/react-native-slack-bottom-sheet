@@ -181,6 +181,12 @@
       }
       self.transitionDuration = [[NSNumber alloc] initWithDouble: 0];
       UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
+      UIView* pview = [[[[rootViewController presentedViewController] view] superview] superview];
+      NSString *s = NSStringFromClass([pview class]);
+      if ([s isEqualToString:@"reactnativeslackbottomsheet.PossiblyTouchesPassableUIView"]) {
+        [pview performSelector:NSSelectorFromString(@"makeOldClass")];
+      }
+        
       [[rootViewController presentedViewController] dismissViewControllerAnimated:!self->_isHiding completion:^{
         self.transitionDuration = oldTransitionDuration;
       }];

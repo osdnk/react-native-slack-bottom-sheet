@@ -64,7 +64,7 @@ class PossiblyTouchesPassableUIView: UIView {
     }
   }
   
-  func makeOldClass() {
+  @objc func makeOldClass() {
     if self.oldClass != nil {
       let oldClassMem = self.oldClass!
       self.oldClass = nil
