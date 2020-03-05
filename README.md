@@ -1,21 +1,51 @@
 # react-native-slack-bottom-sheet
 
-React Native Bottom Sheet
+React Native binding for [Slack Bottom Sheet](https://github.com/slackhq/PanModal/tree/master/PanModal)
 
-## TODO
+![](preview.gif) 
+
+## TODOs 
 
  - [ ] Add motivation to README
- - [ ] Add gifs to README
- - [ ] Add usage example in readme
+ - [x] Add gifs to README
+ - [x] Add usage example in readme
  - [x] Add callbacks on close / open / transition
  - [x] Describe props
  - [x] Export more options from Slack library
  - [x] Add stub on Android and explanation
  - [x] Add commit name check
  - [x] Squash commits and release
- - [ ] add typings to native component and probably wrapper 
+ - [ ] add typings to native component and probably some wrapper 
+ - [ ] Navigation bindings and adapter for android bottom-sheet
  
  It's WIP so use it if you're brave enough.
+ 
+ ## Usage
+ 
+ 
+ ```jsx
+import SlackBottomSheet from 'react-native-slack-bottom-sheet';
+
+<SlackBottomSheet
+  topOffset={100}
+  unmountAnimation={false}
+  initialAnimation={false}
+  presentGlobally={false}
+  backgroundOpacity={0}
+  allowsDragToDismiss={false}
+  allowsTapToDismiss={false}
+  isHapticFeedbackEnabled={false}
+  blocksBackgroundTouches={false}
+  interactsWithOuterScrollView
+>
+  <View style={StyleSheet.absoluteFillObject}>
+    <ScrollView>
+      <Lorem />
+    </ScrollView>
+  </View>
+</SlackBottomSheet>
+
+```
  
  ## Props
  
