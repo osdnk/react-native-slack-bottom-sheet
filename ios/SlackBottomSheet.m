@@ -117,9 +117,6 @@
   if (self.window == nil) {
     BOOL isBridgeInvalidating = [[_bridge valueForKey:@"didInvalidate"] boolValue];
     _isHiding = _presentGlobally || isBridgeInvalidating || _bridge == nil;
-    if (!isBridgeInvalidating && !_unmountAnimation) {
-      self.transitionDuration = [[NSNumber alloc] initWithDouble: 0];
-    }
     [self setVisible:false];
   }
   [super didMoveToWindow];
@@ -178,8 +175,15 @@
       if (!self->_modalPresented) {
         return;
       }
+      NSNumber *oldTransitionDuration = self.transitionDuration;
+      if (!self.unmountAnimation) {
+        self.transitionDuration = [[NSNumber alloc] initWithDouble: 0];;
+      }
+      self.transitionDuration = [[NSNumber alloc] initWithDouble: 0];
       UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
-      [[rootViewController presentedViewController] dismissViewControllerAnimated:!self->_isHiding completion:nil];
+      [[rootViewController presentedViewController] dismissViewControllerAnimated:!self->_isHiding completion:^{
+        self.transitionDuration = oldTransitionDuration;
+      }];
       self->_isHiding = false;
       self->_modalPresented = NO;
     });
