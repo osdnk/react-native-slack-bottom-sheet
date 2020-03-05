@@ -4,6 +4,8 @@ React Native binding for [Slack Bottom Sheet](https://github.com/slackhq/PanModa
 
 ![](preview.gif) 
 
+[Rainbow App](https://github.com/rainbow-me/rainbow). The first consumer of this library.
+
 ## TODOs 
 
  - [ ] Add motivation to README
