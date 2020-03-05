@@ -113,6 +113,11 @@
   // shrug
 }
 
+- (void)didMoveToSuperview {
+  [super didMoveToSuperview];
+  [self setPresentGlobally:_presentGlobally];
+}
+
 -(void) didMoveToWindow {
   if (self.window == nil) {
     BOOL isBridgeInvalidating = [[_bridge valueForKey:@"didInvalidate"] boolValue];
