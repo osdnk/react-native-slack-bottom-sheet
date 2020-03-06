@@ -115,7 +115,7 @@
 
 - (void)didMoveToSuperview {
   [super didMoveToSuperview];
-  [self setPresentGlobally:_presentGlobally];
+  [self setVisible:_visible];
 }
 
 -(void) didMoveToWindow {
@@ -145,21 +145,15 @@
 
 - (void)layoutSubviews {
   [super layoutSubviews];
-  [self setPresentGlobally:_presentGlobally];
   [self setVisible:_visible];
-}
-
-- (void)setPresentGlobally:(BOOL)presentGlobally {
-  outerView = presentGlobally ? nil : self.reactSuperview;
-  _presentGlobally = presentGlobally;
 }
 
 - (void)setVisible:(BOOL)visible {
   _visible = visible;
-  [self setPresentGlobally:_presentGlobally];
   if (visible) {
     RCTExecuteOnMainQueue(^{
-      if (self->outerView == nil && !_presentGlobally) {
+      self->outerView = self->_presentGlobally ? nil : self.reactSuperview;
+      if (self->outerView == nil && !self->_presentGlobally) {
         return;
       }
       if (self->_modalPresented) {
