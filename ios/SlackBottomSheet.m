@@ -73,6 +73,7 @@
   BOOL _visible;
   BOOL _modalPresented;
   BOOL _isHiding;
+  UIViewController *rootViewController;
 }
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge {
@@ -148,6 +149,29 @@
   [self setVisible:_visible];
 }
 
+- (UIViewController *) getParentController {
+  BOOL isRNScreen = NO;
+  UIView *superScreen = self;
+  while (![superScreen isKindOfClass:RCTRootView.class] && !isRNScreen) {
+    superScreen  = [superScreen reactSuperview];
+    NSString *name = NSStringFromClass ([superScreen class]);
+    // React-native-screens changes react hierarchy and searching
+    // for root view is not positive. It does not follow any
+    // good programming rules but I wished not to add RNS as
+    // a dependency and make it workable and without this lib
+    isRNScreen = ([name isEqualToString:@"RNScreenView"]);
+    if (superScreen == nil) {
+      return nil;
+    }
+  }
+  
+  if (isRNScreen) {
+     return (UIViewController *)[superScreen valueForKey: @"controller"];
+  }
+  
+  return nil;
+}
+
 - (void)setVisible:(BOOL)visible {
   _visible = visible;
   if (visible) {
@@ -162,11 +186,18 @@
       if (self->addedSubview == nil) {
         return;
       }
-      UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
+      self->rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
+      
+      if (!self->_presentGlobally) {
+        UIViewController* maybeScreenController = [self getParentController];
+        if (maybeScreenController) {
+          self->rootViewController = maybeScreenController;
+        }
+      }
       object_setClass(self->addedSubview, [HelperView class]);
       [(HelperView *)self->addedSubview setBridge: self->_bridge];
       
-      [rootViewController presentPanModalWithView:self->addedSubview config:self];
+      [self->rootViewController presentPanModalWithView:self->addedSubview config:self];
       self->_modalPresented = YES;
     });
   } else {
@@ -179,14 +210,13 @@
         self.transitionDuration = [[NSNumber alloc] initWithDouble: 0];;
       }
       self.transitionDuration = [[NSNumber alloc] initWithDouble: 0];
-      UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
-      UIView* pview = [[[[rootViewController presentedViewController] view] superview] superview];
+      UIView* pview = [[[[self->rootViewController presentedViewController] view] superview] superview];
       NSString *s = NSStringFromClass([pview class]);
       if ([s isEqualToString:@"reactnativeslackbottomsheet.PossiblyTouchesPassableUIView"]) {
         [pview performSelector:NSSelectorFromString(@"makeOldClass")];
       }
         
-      [[rootViewController presentedViewController] dismissViewControllerAnimated:!self->_isHiding completion:^{
+      [[self->rootViewController presentedViewController] dismissViewControllerAnimated:!self->_isHiding completion:^{
         self.transitionDuration = oldTransitionDuration;
       }];
       self->_isHiding = false;

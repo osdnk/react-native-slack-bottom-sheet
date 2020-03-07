@@ -1,4 +1,5 @@
 import { requireNativeComponent, Platform } from 'react-native';
+import React from 'react';
 
 export default Platform.select({
   ios: requireNativeComponent('ModalView'),
@@ -9,3 +10,16 @@ export default Platform.select({
     return () => null;
   },
 });
+
+export function withScreensWrapper(Component: any) {
+  const RNS = require('react-native-screens');
+  return function ScreensWrapper(props: object) {
+    return (
+      <RNS.ScreenContainer>
+        <RNS.Screen active={true}>
+          <Component {...props} />
+        </RNS.Screen>
+      </RNS.ScreenContainer>
+    );
+  };
+}
