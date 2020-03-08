@@ -86,10 +86,7 @@ import SlackBottomSheet from 'react-native-slack-bottom-sheet';
  | visible                      | true     | 💁           | A flag for hiding or showing modal. Basically works in the same way like mounting and unmounting.
  
 ## RN Screens
-It does not work with modals from RN Screens by default.
-If your app's using RN Screens either unmount all bottom sheets before pushing any modals or wrap bottom sheet in `withScreensWrapper` HOC. 
-
-
+It does not work with modals from RN Screens. If your app's using RN Screens unmount all bottom sheets before pushing any modals. 
   
 ## Installation
 1. Change `platform :ios, '9.0'` to `platform :ios, '10.0'` in Podfile
