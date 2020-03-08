@@ -64,7 +64,7 @@ class PossiblyTouchesPassableUIView: UIView {
     }
   }
   
-  @objc func makeOldClass() {
+  func makeOldClass() {
     if self.oldClass != nil {
       let oldClassMem = self.oldClass!
       self.oldClass = nil
@@ -238,6 +238,13 @@ class PanModalViewController: UIViewController, PanModalPresentable {
     }
   }
   
+  override func viewWillDisappear(_ animated: Bool) {
+    let pview = view?.superview?.superview!
+    if (pview is PossiblyTouchesPassableUIView) {
+      (pview as! PossiblyTouchesPassableUIView).makeOldClass()
+    }
+    super.viewWillDisappear(animated)
+  }
 }
 
 
