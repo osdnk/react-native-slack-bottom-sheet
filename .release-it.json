@@ -4,6 +4,7 @@
   },
   "git": {
     "commitMessage": "chore: release %s",
+    "commitArgs": "-n",
     "tagName": "v%s"
   },
   "plugins": {
