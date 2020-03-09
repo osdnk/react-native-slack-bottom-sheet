@@ -5,6 +5,7 @@
   "git": {
     "commitMessage": "chore: release %s",
     "commitArgs": "-n",
+    "pushArgs": "&",
     "tagName": "v%s"
   },
   "plugins": {
