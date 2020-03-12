@@ -61,6 +61,7 @@
 @property (nonatomic, nonnull) NSNumber *headerHeight;
 @property (nonatomic, nonnull) NSNumber *shortFormHeight;
 @property (nonatomic) BOOL startFromShortForm;
+@property (nonatomic) BOOL scrollsToTop;
 @property (nonatomic, copy, nullable) RCTBubblingEventBlock onWillTransition;
 @property (nonatomic, copy, nullable) RCTBubblingEventBlock onWillDismiss;
 @property (nonatomic, copy, nullable) RCTBubblingEventBlock onDidDismiss;
@@ -73,6 +74,7 @@
   BOOL _visible;
   BOOL _modalPresented;
   BOOL _isHiding;
+  UIViewController* _contoller;
 }
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge {
@@ -103,10 +105,18 @@
     _visible = true;
     _backgroundOpacity = [[NSNumber alloc] initWithDouble:0.7];
     _modalPresented = false;
+    _scrollsToTop = false;
     _isHiding = true;
-    
+
   }
   return self;
+}
+
+-(void) setScrollsToTopOnTapStatusBar:(BOOL) scrollsToTop {
+  self.scrollsToTop = scrollsToTop;
+  if (_contoller != nil) {
+    [_contoller performSelector:NSSelectorFromString(@"setScrollsToTopWithScrollsToTop:") withObject:[NSNumber numberWithBool:scrollsToTop]];
+  }
 }
 
 -(void)reactSetFrame:(CGRect)frame {
@@ -165,8 +175,8 @@
       UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
       object_setClass(self->addedSubview, [HelperView class]);
       [(HelperView *)self->addedSubview setBridge: self->_bridge];
-      
-      [rootViewController presentPanModalWithView:self->addedSubview config:self];
+
+      self->_contoller = [rootViewController presentPanModalWithView:self->addedSubview config:self];
       self->_modalPresented = YES;
     });
   } else {
@@ -180,7 +190,7 @@
       }
       self.transitionDuration = [[NSNumber alloc] initWithDouble: 0];
       UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
-        
+
       [[rootViewController presentedViewController] dismissViewControllerAnimated:!self->_isHiding completion:^{
         self.transitionDuration = oldTransitionDuration;
       }];
@@ -230,6 +240,7 @@ RCT_EXPORT_VIEW_PROPERTY(onWillDismiss, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onDidDismiss, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(presentGlobally, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(interactsWithOuterScrollView, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(scrollsToTopOnTapStatusBar, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(initialAnimation, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(unmountAnimation, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(visible, BOOL)
