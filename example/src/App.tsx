@@ -87,6 +87,7 @@ export default function ConfigScreen() {
     true
   );
   const [allowsDragToDismiss, setAllowsDragToDismiss] = React.useState(true);
+  const [backgroundColor, setBackgroundColor] = React.useState('#000000');
   const [backgroundOpacity, setBackgroundOpacity] = React.useState(0.7);
   const [blocksBackgroundTouches, setBlocksBackgroundTouches] = React.useState(
     true
@@ -120,6 +121,7 @@ export default function ConfigScreen() {
           <Modal
             visible={visible}
             topOffset={topOffset}
+            backgroundColor={backgroundColor}
             backgroundOpacity={backgroundOpacity}
             isShortFormEnabled={isShortFormEnabled}
             longFormHeight={longFormHeight}
@@ -178,6 +180,15 @@ export default function ConfigScreen() {
                 keyboardType="numeric"
                 onChange={({ nativeEvent: { text } }) =>
                   setCornerRadius(Number(text))
+                }
+              />
+              <Text>backgroundColor</Text>
+              <TextInput
+                style={{ backgroundColor: 'grey' }}
+                value={backgroundColor}
+                keyboardType="numeric"
+                onChange={({ nativeEvent: { text } }) =>
+                  setBackgroundColor(String(text))
                 }
               />
               <Text>backgroundOpacity</Text>

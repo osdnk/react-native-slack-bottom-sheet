@@ -61,6 +61,7 @@ import SlackBottomSheet from 'react-native-slack-bottom-sheet';
  | allowsDragToDismiss          | true     |              | A flag to determine if dismissal should be initiated when swiping down on the presented view.
  | allowsTapToDismiss           | true     |              | A flag to determine if dismissal should be initiated when tapping on the dimmed background view.            
  | anchorModalToLongForm        | true     |              | A flag to determine if scrolling should be limited to the longFormHeight. Set false to cap scrolling at .max height
+ | backgroundColor              | #000000  |              | The background view color
  | backgroundOpacity            | 0.7      |              | The background view color opacity
  | blocksBackgroundTouches      | true     | 💁 💁         | A flag to determine if the content below background should accept touches
  | cornerRadius                 | 8.0      |              | The corner radius used when `shouldRoundTopCorners` is enabled
