@@ -37,8 +37,8 @@ class PossiblyTouchesPassableUIView: UIView {
 
 
   override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-    let blocksBackgroundTocuhes = self.config?.value(forKey: "blocksBackgroundTouches") as! Bool
-    if (blocksBackgroundTocuhes || self.subviews[1].frame.contains(point)) {
+    let blocksBackgroundTouches = self.config?.value(forKey: "blocksBackgroundTouches") as! Bool
+    if (blocksBackgroundTouches || self.subviews[1].frame.contains(point)) {
       return super.hitTest(point, with: event)
     }
     return nil
