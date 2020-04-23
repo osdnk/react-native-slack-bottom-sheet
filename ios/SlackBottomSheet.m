@@ -45,6 +45,7 @@
 @property (nonatomic, nonnull) NSNumber *cornerRadius;
 @property (nonatomic, nonnull) NSNumber *springDamping;
 @property (nonatomic, nonnull) NSNumber *transitionDuration;
+@property (nonatomic, nonnull) UIColor *backgroundColor;
 @property (nonatomic, nonnull) NSNumber *backgroundOpacity;
 @property (nonatomic) BOOL anchorModalToLongForm;
 @property (nonatomic) BOOL allowsDragToDismiss;
@@ -103,6 +104,7 @@
     _initialAnimation = true;
     _unmountAnimation = true;
     _visible = true;
+    _backgroundColor = [[UIColor alloc] initWithRed:0.0f green:0.0f blue:0.0f alpha:1];
     _backgroundOpacity = [[NSNumber alloc] initWithDouble:0.7];
     _modalPresented = false;
     _scrollsToTop = false;
@@ -221,6 +223,7 @@ RCT_EXPORT_VIEW_PROPERTY(longFormHeight, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(cornerRadius, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(springDamping, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(transitionDuration, NSNumber)
+RCT_EXPORT_VIEW_PROPERTY(backgroundColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(backgroundOpacity, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(topOffset, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(headerHeight, NSNumber)

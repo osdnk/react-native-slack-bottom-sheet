@@ -172,7 +172,8 @@ class PanModalViewController: UIViewController, PanModalPresentable {
   }
 
   var panModalBackgroundColor: UIColor {
-    return UIColor.black.withAlphaComponent(CGFloat(truncating: self.config?.value(forKey: "backgroundOpacity") as! NSNumber))
+    let backgroundColor: UIColor = self.config?.value(forKey: "backgroundColor") as! UIColor
+    return backgroundColor.withAlphaComponent(CGFloat(truncating: self.config?.value(forKey: "backgroundOpacity") as! NSNumber))
 
   }
   var anchorModalToLongForm: Bool {
