@@ -64,7 +64,6 @@
 @property (nonatomic) BOOL startFromShortForm;
 @property (nonatomic) BOOL scrollsToTop;
 @property (nonatomic, copy, nullable) RCTBubblingEventBlock onWillTransition;
-@property (nonatomic, copy, nullable) RCTBubblingEventBlock onWillDismiss;
 @property (nonatomic, copy, nullable) RCTBubblingEventBlock onDidDismiss;
 @end
 
