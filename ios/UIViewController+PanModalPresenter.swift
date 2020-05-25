@@ -3,9 +3,9 @@ import UIKit
 import PanModal
 
 class BetterGestureRecognizerDelegateAdapter: NSObject, UIGestureRecognizerDelegate {
-  var grd: UIGestureRecognizerDelegate & UIViewController
+  var grd: UIGestureRecognizerDelegate
   var config: NSObject
-  required init(grd: UIGestureRecognizerDelegate & UIViewController, config: NSObject) {
+  required init(grd: UIGestureRecognizerDelegate, config: NSObject) {
     self.grd = grd
     self.config = config
     super.init()
@@ -21,7 +21,8 @@ class BetterGestureRecognizerDelegateAdapter: NSObject, UIGestureRecognizerDeleg
   public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
 
     if (String(describing: type(of: otherGestureRecognizer))
-      == "UIScrollViewPanGestureRecognizer" && grd.presentedViewController is PanModalPresentable && otherGestureRecognizer.view != (grd.presentedViewController as? PanModalPresentable)?.panScrollable) {
+      == "UIScrollViewPanGestureRecognizer"
+      && (grd as? UIPresentationController)?.presentedViewController is PanModalPresentable && otherGestureRecognizer.view != ((grd as? UIPresentationController)?.presentedViewController as? PanModalPresentable)?.panScrollable) {
       return self.config.value(forKey: "interactsWithOuterScrollView") as! Bool
     }
     return false
@@ -37,8 +38,8 @@ class PossiblyTouchesPassableUIView: UIView {
 
 
   override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-    let blocksBackgroundTouches = self.config?.value(forKey: "blocksBackgroundTouches") as! Bool
-    if (blocksBackgroundTouches || self.subviews[1].frame.contains(point)) {
+    let blocksBackgroundTocuhes = self.config?.value(forKey: "blocksBackgroundTouches") as! Bool
+    if (blocksBackgroundTocuhes || self.subviews[1].frame.contains(point)) {
       return super.hitTest(point, with: event)
     }
     return nil
@@ -57,7 +58,7 @@ class PossiblyTouchesPassableUIView: UIView {
       outerView?.addSubview(self)
     }
     let gr: UIGestureRecognizer = self.gestureRecognizers![0]
-    grdelegate = BetterGestureRecognizerDelegateAdapter.init(grd: gr.delegate! as! (UIGestureRecognizerDelegate & UIViewController), config: config!)
+    grdelegate = BetterGestureRecognizerDelegateAdapter.init(grd: gr.delegate!, config: config!)
     gr.delegate = grdelegate
     if outerView == nil {
       makeOldClass()
@@ -88,6 +89,14 @@ class PossiblyTouchesPassableUIView: UIView {
 var PossiblyTouchesPassableUITransitionView: AnyClass?  = nil;
 
 class PanModalViewController: UIViewController, PanModalPresentable {
+  func hide() {
+    
+  }
+  
+  func unhackParent() {
+    
+  }
+  
   var config: NSObject?
   var scrollView: UIScrollView?
   convenience init(config: NSObject) {
@@ -172,8 +181,7 @@ class PanModalViewController: UIViewController, PanModalPresentable {
   }
 
   var panModalBackgroundColor: UIColor {
-    let backgroundColor: UIColor = self.config?.value(forKey: "backgroundColor") as! UIColor
-    return backgroundColor.withAlphaComponent(CGFloat(truncating: self.config?.value(forKey: "backgroundOpacity") as! NSNumber))
+    return UIColor.black.withAlphaComponent(CGFloat(truncating: self.config?.value(forKey: "backgroundOpacity") as! NSNumber))
 
   }
   var anchorModalToLongForm: Bool {
