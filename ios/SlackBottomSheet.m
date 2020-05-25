@@ -64,6 +64,7 @@
 @property (nonatomic) BOOL startFromShortForm;
 @property (nonatomic) BOOL scrollsToTop;
 @property (nonatomic, copy, nullable) RCTBubblingEventBlock onWillTransition;
+@property (nonatomic, copy, nullable) RCTBubblingEventBlock onWillDismiss;
 @property (nonatomic, copy, nullable) RCTBubblingEventBlock onDidDismiss;
 @end
 
@@ -238,7 +239,6 @@ RCT_EXPORT_VIEW_PROPERTY(shouldRoundTopCorners, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(showDragIndicator, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(startFromShortForm, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(onWillTransition, RCTBubblingEventBlock)
-RCT_EXPORT_VIEW_PROPERTY(onWillDismiss, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onDidDismiss, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(presentGlobally, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(interactsWithOuterScrollView, BOOL)
